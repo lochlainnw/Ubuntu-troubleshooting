@@ -31,7 +31,7 @@ The output will be saved in a file named like `hostname_YYYY-MM-DD_HH-MM-SS_outp
 
 ## Prerequisites
 
-- Linux environment Ubuntu preferably. 
+- Linux environment (Ubuntu preferably).
 - Required packages: `vmstat`, `mpstat`, `pidstat`, `iostat`, `sar`. The script attempts to install `sysstat` if `sar` is missing.
 
 ## tempuseradd.sh
