@@ -1,3 +1,7 @@
+## ubnSystemTroubleshooting Script
+
+This script provides several commands to assist with troubleshooting system performance and health on Linux machines.
+
 ### Usage:
 
 ```bash
@@ -19,8 +23,9 @@
 | `iostat` | Runs disk IO statistics. |
 | `free` | Checks installed memory and buffers/cache. |
 | `sar` | Runs network interface and TCP metrics. |
-| `top` | Displays a dynamic real-time view of running processes (not included in "all" output).
+| `top` | Displays a dynamic real-time view of running processes (not included in "all" output). |
 
+### Note:
 
 The output will be saved in a file named like `hostname_YYYY-MM-DD_HH-MM-SS_output.log` in the `/tmp` directory.
 
