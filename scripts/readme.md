@@ -1,4 +1,4 @@
-## ubnSystemTroubleshooting Script
+## Ubuntu System Troubleshooting Script
 
 This script provides several commands to assist with troubleshooting system performance and health on Linux machines.
 
