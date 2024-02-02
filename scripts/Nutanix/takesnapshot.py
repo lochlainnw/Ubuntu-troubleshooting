@@ -1,8 +1,13 @@
 #!/opt/hostedtoolcache/Python/3.10.11/x64/bin/python3.10
 
 """
-Take snapshots of two test VMs in Nutanix client.  Deletes any existing snapshots on the hosts first.  Post success message to datadog
-re-reqs: Add Prism central IP address, secrets to log in.
+Take snapshots of two test VMs in Nutanix client.  Remove any existing snapshots on the hosts first if they exist.  post success to datadog.
+Pre-reqs: 
+    prism_central_ip = ""
+    prism_central_username = 
+    prism_central_password = 
+    datadog keys
+    proxy IP if needed
 """
 __author__ = "LW"
 
@@ -46,6 +51,34 @@ proxies = {
     "https": None
 }
 
+#Function to post to datadog
+def send_datadog_event(event_text, vm, status, datacenter):
+    # Create an instance of the EventCreateRequest
+    event = EventCreateRequest(
+        title=f"test snapshot task - {datacenter} - {vm}",
+        text=event_text,
+        priority="normal",
+        host=vm,
+        tags=[f"location:{datacenter}", "source:somwhere", "environment:test", "application:test", "status:{status}"]
+    )
+
+    # Configure the API client
+    apiKeyAuth = os.environ.get('')
+    appKeyAuth = os.environ.get('')
+    configuration = Configuration()
+    configuration.api_key["apiKeyAuth"] = apiKeyAuth
+    configuration.api_key["appKeyAuth"] = appKeyAuth
+    configuration.server_variables["site"] = "datadoghq.us"
+    configuration.proxy = ""
+
+    # Create an instance of the EventsApi
+    with ApiClient(configuration) as api_client:
+        events_api = EventsApi(api_client)
+
+        # Create the event
+        response = events_api.create_event(body=event)
+
+
 #This is the function that creates a new snapshot
 def create_snapshot(vm_uuid, snapshot_name, vm_name):
     snapshot_data = {
@@ -70,9 +103,19 @@ def create_snapshot(vm_uuid, snapshot_name, vm_name):
 
     if snapshot_response.status_code == 201:
         print("Snapshot created successfully:", snapshot_name)
+        print("Posting to datadog")
+        print("DataDog dashboard - enter URL here")
+        event_text = 'Snapshot Success for ' + vm_name
+        status="info"
+        datacenter="enter Datacenter or location information here for tagging"
+        send_datadog_event(event_text, vm_name, status, datacenter)
     else:
         print("Failed to create snapshot:", snapshot_name)
         print("Status code:", snapshot_response.status_code)
+        event_text = 'Snapshot FAILURE for ' + vm_name
+        status="error"
+        datacenter="enter Datacenter or location information here for tagging"
+        send_datadog_event(event_text, vm_name, status, datacenter)
 
 #This is the function that deletes an existing snapshot
 def delete_snapshot(snapshot_uuid, snapshot_name, vm_name, vm_uuid):
@@ -96,7 +139,7 @@ def delete_snapshot(snapshot_uuid, snapshot_name, vm_name, vm_uuid):
         print("Failed to Delete snapshot:", snapshot_uuid, snapshot_name)
         print("Status code:", snapshot_response.status_code)
 
-#Start of process here to find test VMs by hostname
+#Start of process here to find test VMs
 response = requests.post(
     api_endpoint,
     headers=headers,
