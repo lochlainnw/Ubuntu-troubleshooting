@@ -34,15 +34,15 @@ The output will be saved in a file named like `hostname_YYYY-MM-DD_HH-MM-SS_outp
 - Linux environment Ubuntu preferably. 
 - Required packages: `vmstat`, `mpstat`, `pidstat`, `iostat`, `sar`. The script attempts to install `sysstat` if `sar` is missing.
 
-## tempuseradd.sh
+**## tempuseradd.sh**
 
 This script will add a temporary user called tempuser along with a group.  The user is set to be disabled after one day.
 A random password is assigned to the account using the randompass.sh script.
 
-### Usage:
+**### Usage:**
 
 ```bash
 source randompass.sh
 tempuseradd #add the user
 userrm #Remove the user and group manually
-
+```
