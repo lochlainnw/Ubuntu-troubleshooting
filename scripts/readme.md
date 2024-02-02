@@ -6,7 +6,7 @@ This script provides several commands to assist with troubleshooting system perf
 
 ```bash
 ./ubnsystemtroubleshooting.sh [command] [all]
-
+````
 
 * `[command]`: Specifies the individual command to run (e.g., `uptime`, `dmesg`).
 * `[all]`: Executes all commands except `top` and saves the combined output to a file.
@@ -44,3 +44,4 @@ This script adds a temporary user called `tempuser` along with a group. The user
 source randompass.sh
 tempuseradd # Add the user
 userrm # Remove the user and group manually
+````
