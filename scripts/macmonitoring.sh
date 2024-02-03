@@ -1,4 +1,5 @@
 #!/bin/bash
+# Works for MAC
 
 function print_help() {
   echo "Usage: $0 [command] [all]"
